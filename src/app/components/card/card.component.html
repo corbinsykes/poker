@@ -1,0 +1,56 @@
+<div
+    class="card"
+    [ngClass]="{
+        'is-red': card.suit.id === 2 || card.suit.id === 3,
+        'in-straight': card.inStraight
+    }"
+    (click)="card.display()">
+
+    <ng-template #cardNotShown>
+        <div class="card-back">
+            <span>C</span>
+        </div>
+    </ng-template>
+
+    <div
+        class="card-front"
+        *ngIf="card.shown; else cardNotShown">
+        <div class="card-front--left">
+            <span>{{card.value.display_value}}</span>
+            <span>{{card.suit.icon}}</span>
+            <span *ngIf="card.suit.id === 1">
+                &#x2663;
+            </span>
+            <span *ngIf="card.suit.id === 2">
+                &#x2666;
+            </span>
+            <span *ngIf="card.suit.id === 3">
+                &#x2764;
+            </span>
+            <span *ngIf="card.suit.id === 4">
+                &#x2660;
+            </span>
+        </div>
+
+        <div class="card-front--center">
+
+        </div>
+
+        <div class="card-front--right">
+            <span>{{card.value.display_value}}</span>
+            <span>{{card.suit.icon}}</span>
+            <span *ngIf="card.suit.id === 1">
+                &#x2663;
+            </span>
+            <span *ngIf="card.suit.id === 2">
+                &#x2666;
+            </span>
+            <span *ngIf="card.suit.id === 3">
+                &#x2764;
+            </span>
+            <span *ngIf="card.suit.id === 4">
+                &#x2660;
+            </span>
+        </div>
+    </div>
+</div>

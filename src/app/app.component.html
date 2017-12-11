@@ -1,20 +1,143 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!
-  </h1>
-  <img width="300" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<header class="header">
+    <div class="header-new">
+        <div>
+            <p># of players</p>
+            <input
+                class="input"
+                type="number"
+                name="hands"
+                placeholder="# of players"
+                [(ngModel)]="handsPerGame">
+        </div>
+        <div>
+            <p># of cards</p>
+            <input
+                class="input"
+                type="number"
+                name="cards"
+                placeholder="# of cards"
+                [(ngModel)]="cardsPerHand">
+        </div>
+        <div>
+            <p># of cards in straight</p>
+            <input
+                class="input"
+                type="number"
+                name="cards"
+                placeholder="# of cards"
+                [(ngModel)]="straightLength">
+        </div>
 
+        <button
+            class="button button--action"
+            (click)="newGame()">
+            <span>New Game</span>
+        </button>
+    </div>
+
+
+    <div class="button-group">
+        <button
+            class="button button--primary"
+            (click)="deck.shuffle()">
+            <span>Shuffle Deck</span>
+        </button>
+
+        <button
+            class="button button--primary"
+            (click)="deck.display()">
+            <span *ngIf="!deck.showAll">
+                Show Dealt &amp; Not Dealt
+            </span>
+            <span *ngIf="deck.showAll">
+                Hide Dealt &amp; Not Dealt
+            </span>
+        </button>
+
+        <button
+            class="button button--primary"
+            (click)="dealNextCard()">
+            <span>Deal Next Card</span>
+        </button>
+    </div>
+</header>
+
+<article class="table">
+    <section
+        class="hands"
+        *ngIf="deck.showAll">
+        <div class="hand">
+            <header class="hand-header">
+                <h2>Not Dealt</h2>
+            </header>
+
+            <div class="deck">
+                <card
+                    [card]="card"
+                    *ngFor="let card of deck.notDealt">
+                </card>
+            </div>
+        </div>
+
+        <div class="hand">
+            <header class="hand-header">
+                <h2>Dealt</h2>
+            </header>
+
+            <div class="deck">
+                <card
+                    [card]="card"
+                    *ngFor="let card of deck.dealt">
+                </card>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="hands">
+        <div
+            class="hand"
+            *ngFor="let hand of players">
+            <header class="hand-header">
+                <h2>Player {{hand.player}}</h2>
+                <div class="button-group button-group--stack">
+                    <button
+                        class="button button--secondary"
+                        (click)="hand.display()">
+                        <span>Display</span>
+                    </button>
+                    <button
+                        class="button button--secondary"
+                        (click)="hand.sortBySuit()">
+                        <span>Sort by Suit</span>
+                    </button>
+                    <button
+                        class="button button--secondary"
+                        (click)="hand.sortByValue()">
+                        <span>Sort by Value</span>
+                    </button>
+                    <button
+                        class="button button--secondary"
+                        (click)="hasStraight(hand, straightLength, false)">
+                        <span>Straight?</span>
+                    </button>
+                    <button
+                        class="button button--secondary"
+                        (click)="hasStraight(hand, straightLength, true)">
+                        <span>Straight Flush?</span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="deck">
+                <card
+                    [card]="card"
+                    *ngFor="let card of hand.cards">
+                </card>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+</article>
